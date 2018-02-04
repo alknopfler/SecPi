@@ -57,12 +57,13 @@ function gen_and_sign_cert(){
 }
 
 function check_requirements(){
+
 	if ! hash pip 2>/dev/null;
 	then
 		echo "Dependency pip is missing"
 		exit 5
 	fi
-	
+
 	# manager or complete install only
 	if [ $1 -eq 1 ] || [ $1 -eq 2 ]
 	then
@@ -132,126 +133,132 @@ then
 fi
 
 echo "Select installation type:"
+echo "[0] Complete auto-installation reading config file (manager, webinterface, worker with standard params)"
 echo "[1] Complete installation (manager, webinterface, worker)"
 echo "[2] Management installation (manager, webinterface)"
 echo "[3] Worker installation (worker only)"
 read INSTALL_TYPE
 
-
 check_requirements $INSTALL_TYPE
 
-echo "Please input the user which SecPi should use: (default: root)"
-read SECPI_USER
-
-if [ -z "$SECPI_USER" ]
+if [ $INSTALL_TYPE -eq 0 ]
 then
-	SECPI_USER="root"
-	echo "Setting user to default value"
+   source ./default-install-config.conf
+else
+
+
+    echo "Please input the user which SecPi should use: (default: root)"
+    read SECPI_USER
+
+    if [ -z "$SECPI_USER" ]
+    then
+        SECPI_USER="root"
+        echo "Setting user to default value"
+    fi
+
+    echo "Please input the group which SecPi should use: (default: root)"
+    read SECPI_GROUP
+
+    if [ -z "$SECPI_GROUP" ]
+    then
+        SECPI_GROUP="root"
+        echo "Setting group to default value"
+    fi
+
+    echo "Enter RabbitMQ Server IP"
+    read MQ_IP
+
+    echo "Enter RabbitMQ Server Port (default: 5671)"
+    read MQ_PORT
+
+    #if [ "$MQ_PORT" = ""]
+    if [ -z "$MQ_PORT" ]
+    then
+        MQ_PORT="5671"
+        echo "Setting port to default value"
+    fi
+
+    echo "Enter RabbitMQ User (default: secpi)"
+    read MQ_USER
+
+    if [ -z "$MQ_USER" ]
+    then
+        MQ_USER="secpi"
+        echo "Setting user to default value"
+    fi
+
+    echo "Enter RabbitMQ Password"
+    read MQ_PWD
+
+    if [ $INSTALL_TYPE -ne 3 ]
+    then
+        echo "Generate CA and certificates? [yes/no]"
+        read CREATE_CA
+    fi
+
+    if [ "$CREATE_CA" = "yes" ] || [ "$CREATE_CA" = "y" ];
+    then
+        echo "Enter certificate authority domain (for rabbitmq and webserver, default: secpi.local)"
+        read CA_DOMAIN
+
+        #if [ "$CA_DOMAIN" = ""]
+        if [ -z "$CA_DOMAIN" ]
+        then
+            CA_DOMAIN="secpi.local"
+            echo "Setting CA domain to default value"
+        fi
+    fi
+
+    if [ $INSTALL_TYPE -eq 1 ] || [ $INSTALL_TYPE -eq 2 ]
+    then
+        if [ "$CREATE_CA" = "yes" ] || [ "$CREATE_CA" = "y" ];
+        then
+            echo "Enter name for webserver certificate (excluding $CA_DOMAIN; The names 'manager', 'webui', 'mq-server' and 'worker1' are already reserved for RabbitMQ certificates)"
+            read WEB_CERT_NAME
+        fi
+
+        echo "Enter user for webinterface: (default: admin)"
+        read WEB_USER
+
+        if [ -z "$WEB_USER" ]
+        then
+            WEB_USER="admin"
+            echo "Setting user to default value"
+        fi
+
+        echo "Enter password for webinterface: (default: admin)"
+        read WEB_PWD
+
+        if [ -z "$WEB_PWD" ]
+        then
+            WEB_PWD="admin"
+            echo "Setting password to default value"
+        fi
+
+        echo "Should we take care of rabbitmq.config file? [yes/no]"
+        echo "Select no if you already have an existing rabbitmq setup."
+        read CREATE_RMQ_CONFIG
+
+        if [ "$CREATE_RMQ_CONFIG" = "yes" ] || [ "$CREATE_RMQ_CONFIG" = "y" ];
+        then
+            if [ ! -d /etc/rabbitmq ];
+            then
+                echo "Error, /etc/rabbitmq/ doesn't exist... is RabbitMQ installed?"
+                exit 1
+            fi
+            echo "Copying rabbitmq.config file..."
+            cp scripts/rabbitmq.config $RMQ_CONFIG
+
+            sed -i "s/<port>/$MQ_PORT/" $RMQ_CONFIG
+
+            if [ "$CREATE_CA" = "yes" ] || [ "$CREATE_CA" = "y" ];
+            then
+                sed -i "s/<certfile>/\/opt\/secpi\/certs\/mq-server.$CA_DOMAIN.cert.pem/" $RMQ_CONFIG
+                sed -i "s/<keyfile>/\/opt\/secpi\/certs\/mq-server.$CA_DOMAIN.key.pem/" $RMQ_CONFIG
+            fi
+        fi
+    fi
 fi
-
-echo "Please input the group which SecPi should use: (default: root)"
-read SECPI_GROUP
-
-if [ -z "$SECPI_GROUP" ]
-then
-	SECPI_GROUP="root"
-	echo "Setting group to default value"
-fi
-
-echo "Enter RabbitMQ Server IP"
-read MQ_IP
-
-echo "Enter RabbitMQ Server Port (default: 5671)"
-read MQ_PORT
-
-#if [ "$MQ_PORT" = ""]
-if [ -z "$MQ_PORT" ]
-then
-	MQ_PORT="5671"
-	echo "Setting port to default value"
-fi
-
-echo "Enter RabbitMQ User (default: secpi)"
-read MQ_USER
-
-if [ -z "$MQ_USER" ]
-then
-	MQ_USER="secpi"
-	echo "Setting user to default value"
-fi
-
-echo "Enter RabbitMQ Password"
-read MQ_PWD
-
-if [ $INSTALL_TYPE -ne 3 ]
-then
-	echo "Generate CA and certificates? [yes/no]"
-	read CREATE_CA
-fi
-
-if [ "$CREATE_CA" = "yes" ] || [ "$CREATE_CA" = "y" ];
-then
-	echo "Enter certificate authority domain (for rabbitmq and webserver, default: secpi.local)"
-	read CA_DOMAIN
-
-	#if [ "$CA_DOMAIN" = ""]
-	if [ -z "$CA_DOMAIN" ]
-	then
-		CA_DOMAIN="secpi.local"
-		echo "Setting CA domain to default value"
-	fi
-fi
-
-if [ $INSTALL_TYPE -eq 1 ] || [ $INSTALL_TYPE -eq 2 ]
-then
-	if [ "$CREATE_CA" = "yes" ] || [ "$CREATE_CA" = "y" ];
-	then
-		echo "Enter name for webserver certificate (excluding $CA_DOMAIN; The names 'manager', 'webui', 'mq-server' and 'worker1' are already reserved for RabbitMQ certificates)"
-		read WEB_CERT_NAME
-	fi
-		
-	echo "Enter user for webinterface: (default: admin)"
-	read WEB_USER
-
-	if [ -z "$WEB_USER" ]
-	then
-		WEB_USER="admin"
-		echo "Setting user to default value"
-	fi
-	
-	echo "Enter password for webinterface: (default: admin)"
-	read WEB_PWD
-
-	if [ -z "$WEB_PWD" ]
-	then
-		WEB_PWD="admin"
-		echo "Setting password to default value"
-	fi
-
-	echo "Should we take care of rabbitmq.config file? [yes/no]"
-	echo "Select no if you already have an existing rabbitmq setup."
-	read CREATE_RMQ_CONFIG
-
-	if [ "$CREATE_RMQ_CONFIG" = "yes" ] || [ "$CREATE_RMQ_CONFIG" = "y" ];
-	then
-		if [ ! -d /etc/rabbitmq ];
-		then
-			echo "Error, /etc/rabbitmq/ doesn't exist... is RabbitMQ installed?"
-			exit 1
-		fi
-		echo "Copying rabbitmq.config file..."
-		cp scripts/rabbitmq.config $RMQ_CONFIG
-
-		sed -i "s/<port>/$MQ_PORT/" $RMQ_CONFIG
-		
-		if [ "$CREATE_CA" = "yes" ] || [ "$CREATE_CA" = "y" ];
-		then
-			sed -i "s/<certfile>/\/opt\/secpi\/certs\/mq-server.$CA_DOMAIN.cert.pem/" $RMQ_CONFIG
-			sed -i "s/<keyfile>/\/opt\/secpi\/certs\/mq-server.$CA_DOMAIN.key.pem/" $RMQ_CONFIG
-		fi
-	fi
-fi
-
 
 
 
@@ -314,7 +321,7 @@ cp -R tools/ $SECPI_PATH/
 cp logging.conf $SECPI_PATH/
 
 # manager or complete install
-if [ $INSTALL_TYPE -eq 1 ] || [ $INSTALL_TYPE -eq 2 ]
+if [ $INSTALL_TYPE -eq 0 ] || [ $INSTALL_TYPE -eq 1 ] || [ $INSTALL_TYPE -eq 2 ]
 then
 	echo "Copying manager..."
 	cp -R manager/ $SECPI_PATH/
@@ -394,7 +401,7 @@ fi
 
 
 # worker or complete install
-if [ $INSTALL_TYPE -eq 1 ] || [ $INSTALL_TYPE -eq 3 ]
+if [ $INSTALL_TYPE -eq 0 ] || [ $INSTALL_TYPE -eq 1 ] || [ $INSTALL_TYPE -eq 3 ]
 then
 	echo "Copying worker..."
 	cp -R worker/ $SECPI_PATH/

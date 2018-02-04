@@ -10,4 +10,3 @@ dropbox
 logging
 netifaces
 python-gsmmodem
-python-pygame
