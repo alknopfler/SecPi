@@ -50,7 +50,7 @@ class Worker:
 			logging.error("Wasn't able to load config file, exiting...")
 			quit()
 		
-		time.sleep(60) # TEMPORARY FIX for #83
+		time.sleep(10) # TEMPORARY FIX for #83
 
 		self.prepare_data_directory(self.data_directory)
 		self.connect()
@@ -338,9 +338,9 @@ class Worker:
 				t.start()
 		
 			# wait for threads to finish
-			for t in threads:
-				t.join()
-		
+			#for t in threads:
+			#	t.join()
+
 			if self.prepare_data(): #check if there is any data to send
 				zip_file = open("%s/%s.zip" % (self.zip_directory, config.get('pi_id')), "rb")
 				byte_stream = zip_file.read()

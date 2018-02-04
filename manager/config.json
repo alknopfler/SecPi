@@ -1,4 +1,5 @@
 {
+	"holddown_timer":60,
 	"rabbitmq":{
 		"master_ip": "<ip>",
 		"master_port": <port>,
