@@ -63,7 +63,7 @@ class Manager:
 		try:
 			self.holddown_timer = int(config.get("holddown_timer"))
 		except Exception: # if not specified in the config file we set a default value
-			self.holddown_timer = 210
+			self.holddown_timer = 60
 			logging.debug("Couldn't find or use config parameter for holddown timer in manager config file. Setting default value: %d" % self.holddown_timer)
 
 		self.holddown_state = False
