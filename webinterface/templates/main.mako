@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html ng-app="SecPi">
 <head>
-	<title>SecPi - ${page_title}</title>
+	<title>AlkAlarm - ${page_title}</title>
 	
 	<meta name="viewport" content="width=device-width" />
 	

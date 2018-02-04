@@ -2,21 +2,21 @@
 
 <%def name="active_tab()"><% return "home" %></%def>
 
-<h1>Welcome...</h1>
-... to the SecPi control interface.
+<h1>Welcome AlkAlarm</h1>
+... to the control interface.
 
 <h2>Activate</h2>
 
 <div ng-controller="ActivateController as actCtrl">
 	<div ng-show="actCtrl.active_setups.length == 0">
-		Inactive: 
+		<b>Alarma OFF</b>:
 		<dropdown ng-model="actCtrl.activate_setup" items="actCtrl.inactive_setups"></dropdown>
-		<input type="button" ng-click="actCtrl.activate()" class="btn btn-success" value="activate" />
+		<input type="button" ng-click="actCtrl.activate()" class="btn btn-success" value="ACTIVAR" />
 	</div>
 	<div ng-show="actCtrl.active_setups.length > 0">
-		Active: 
+		<b>Alarma ON</b>:
 		<dropdown ng-model="actCtrl.deactivate_setup" items="actCtrl.active_setups"></dropdown>
-		<input type="button" ng-click="actCtrl.deactivate()" class="btn btn-success" value="deactivate" />
+		<input type="button" ng-click="actCtrl.deactivate()" class="btn btn-success" value="DESACTIVAR" />
 	</div>
 </div>
 
