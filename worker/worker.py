@@ -72,8 +72,8 @@ class Worker:
 		credentials = pika.PlainCredentials(config.get('rabbitmq')['user'], config.get('rabbitmq')['password'])
 		parameters = pika.ConnectionParameters(credentials=credentials,
 			host=config.get('rabbitmq')['master_ip'],
-			port=5671,
-			ssl=True,
+			port=config.get('rabbitmq')['master_port'],
+			ssl=False,
 			socket_timeout=10,
 			ssl_options = { 
 				"ca_certs":PROJECT_PATH+"/certs/"+config.get('rabbitmq')['cacert'],

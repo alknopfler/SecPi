@@ -97,8 +97,8 @@ class Root(object):
 		credentials = pika.PlainCredentials(config.get('rabbitmq')['user'], config.get('rabbitmq')['password'])
 		parameters = pika.ConnectionParameters(credentials=credentials,
 			host=config.get('rabbitmq')['master_ip'],
-			port=5671,
-			ssl=True,
+			port=config.get('rabbitmq')['master_port'],
+			ssl=False,
 			socket_timeout=10,
 			ssl_options = {
 				"ca_certs":PROJECT_PATH+"/certs/"+config.get('rabbitmq')['cacert'],
@@ -305,11 +305,11 @@ def run():
 	
 	cherrypy.config.update({
 		'server.socket_host': '0.0.0.0',
-		'server.socket_port': 8443,
-		'server.ssl_module':'pyopenssl',
-		'server.ssl_certificate':'%s/certs/%s'%(PROJECT_PATH, config.get("server_cert")),
-		'server.ssl_private_key':'%s/certs/%s'%(PROJECT_PATH, config.get("server_key")),
-		'server.ssl_certificate_chain':'%s/certs/%s'%(PROJECT_PATH, config.get("server_ca_chain")),
+		'server.socket_port': 8080,
+		#'server.ssl_module':'pyopenssl',
+		#'server.ssl_certificate':'%s/certs/%s'%(PROJECT_PATH, config.get("server_cert")),
+		#'server.ssl_private_key':'%s/certs/%s'%(PROJECT_PATH, config.get("server_key")),
+		#'server.ssl_certificate_chain':'%s/certs/%s'%(PROJECT_PATH, config.get("server_ca_chain")),
 		'log.error_file': "/var/log/secpi/webinterface.log",
 		'log.access_file': "/var/log/secpi/webinterface_access.log",
 		'log.screen': False

@@ -1,5 +1,9 @@
 import pygame
 import logging
+### my contribution
+import cherrypy
+from tools.db import objects
+###
 
 from tools.action import Action
 
@@ -33,6 +37,14 @@ class Speaker(Action):
 		pygame.mixer.music.set_volume(1)
 
 		for i in range(0, self.repetitions):
+			#### my contribution
+			id = cherrypy.request.json['id']
+			if(id and id > 0):
+				su = self.db.query(objects.Setup).get(int(id))
+				if not su.active_state :
+					pygame.mixer.quit()
+					logging.debug("Speaker: Finished playing audio")
+			####
 			pygame.mixer.music.rewind()
 			pygame.mixer.music.play()
 			while pygame.mixer.music.get_busy():
