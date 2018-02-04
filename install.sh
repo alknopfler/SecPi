@@ -279,7 +279,7 @@ create_folder $TMP_PATH $SECPI_USER $SECPI_GROUP
 create_folder $TMP_PATH/worker_data $SECPI_USER $SECPI_GROUP
 create_folder $TMP_PATH/alarms $SECPI_USER $SECPI_GROUP
 
-
+cp alarma.mp3 $TMP_PATH
 
 
 create_folder $CERT_PATH $SECPI_USER $SECPI_GROUP
