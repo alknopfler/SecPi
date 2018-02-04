@@ -30,7 +30,7 @@
 <body>
 
 	<div id="nav" ng-controller="NavController as navCtrl">
-		<h1 class="header">SecPi</h1>
+		<h1 class="header">AlkAlarm</h1>
 		<%include file="nav.mako" args="active_tab=active_tab"/>
 		<%block name="subnav" />
 	</div>
@@ -40,7 +40,7 @@
 	</div>
 
 	<footer>
-		SecPi, a project by Martin Liebl and Philip W&ouml;lfel
+		AlkAlarm is a System adapted by alknopfler
 	</footer>
 
 	<div ng-controller="FlashController as flashCtrl" id="flash_container">

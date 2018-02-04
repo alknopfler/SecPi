@@ -5,16 +5,16 @@
 <h1>Welcome AlkAlarm</h1>
 ... to the control interface.
 
-<h2>Activate</h2>
+<h2>Activar / Desactivar</h2>
 
 <div ng-controller="ActivateController as actCtrl">
 	<div ng-show="actCtrl.active_setups.length == 0">
-		<b>Alarma OFF</b>:
+		<p style="color:#FF5733; font-weight:bold;">Alarma APAGADA:</p>
 		<dropdown ng-model="actCtrl.activate_setup" items="actCtrl.inactive_setups"></dropdown>
 		<input type="button" ng-click="actCtrl.activate()" class="btn btn-success" value="ACTIVAR" />
 	</div>
 	<div ng-show="actCtrl.active_setups.length > 0">
-		<b>Alarma ON</b>:
+		<p style="color:#048806; font-weight:bold;"> Alarma ENCENDIDA</b>:</p>
 		<dropdown ng-model="actCtrl.deactivate_setup" items="actCtrl.active_setups"></dropdown>
 		<input type="button" ng-click="actCtrl.deactivate()" class="btn btn-success" value="DESACTIVAR" />
 	</div>

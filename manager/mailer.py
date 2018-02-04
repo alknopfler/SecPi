@@ -34,7 +34,7 @@ class Mailer(Notifier):
 	def notify(self, info):
 		if not self.corrupted:
 			# Mail setup
-			info_str = "ALARMA DE CASA! (sensor '%s' => %s)"%(info['sensor'], info['message'])
+			info_str = "ALARMA DE CASA sensor - %s - => %s" % (info['sensor'], info['message'])
 			self.message = MIMEMultipart()
 			self.message["From"] = self.params["sender"]
 			self.message["To"] = self.params["recipient"]
