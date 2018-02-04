@@ -34,12 +34,13 @@ class Mailer(Notifier):
 	def notify(self, info):
 		if not self.corrupted:
 			# Mail setup
+			info_str = "ALARMA DE CASA! (sensor '%s' => %s)"%(info['sensor'], info['message'])
 			self.message = MIMEMultipart()
 			self.message["From"] = self.params["sender"]
 			self.message["To"] = self.params["recipient"]
-			self.message["Subject"] = self.params.get("subject", "SecPi Alarm")
+			self.message["Subject"] = info_str
 			self.message.attach(MIMEText(self.params.get("text", "Your SecPi raised an alarm. Please check the attached files."), "plain"))
-			info_str = "Recieved alarm on sensor %s from worker %s: %s"%(info['sensor'], info['worker'], info['message'])
+
 			self.message.attach(MIMEText(info_str, "plain"))
 			
 			self.prepare_mail_attachments()
