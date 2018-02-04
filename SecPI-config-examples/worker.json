@@ -1,0 +1,12 @@
+[
+  {
+    "type": "workers",
+    "data": {
+      "description": null,
+      "address": "192.168.10.69",
+      "active_state": true,
+      "id": 1,
+      "name": "worker"
+    }
+  }
+]

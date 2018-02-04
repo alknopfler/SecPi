@@ -1,0 +1,24 @@
+[
+  {
+    "type": "actionparams",
+    "data": {
+      "description": null,
+      "object_type": "action",
+      "value": "/var/tmp/secpi/alarma_3.mp3",
+      "object_id": 1,
+      "key": "path_to_audio",
+      "id": 1
+    }
+  },
+  {
+    "type": "actionparams",
+    "data": {
+      "description": null,
+      "object_type": "action",
+      "value": "5",
+      "object_id": 1,
+      "key": "repetitions",
+      "id": 15
+    }
+  }
+]

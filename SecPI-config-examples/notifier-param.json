@@ -1,0 +1,101 @@
+[
+  {
+    "type": "notifierparams",
+    "data": {
+      "description": null,
+      "object_type": "notifier",
+      "value": "*******@gmail.com",
+      "object_id": 1,
+      "key": "sender",
+      "id": 2
+    }
+  },
+  {
+    "type": "notifierparams",
+    "data": {
+      "description": null,
+      "object_type": "notifier",
+      "value": "*******@gmail.com",
+      "object_id": 1,
+      "key": "recipient",
+      "id": 3
+    }
+  },
+  {
+    "type": "notifierparams",
+    "data": {
+      "description": null,
+      "object_type": "notifier",
+      "value": "Ha saltado la Alarma de casa!!!!",
+      "object_id": 1,
+      "key": "subject",
+      "id": 4
+    }
+  },
+  {
+    "type": "notifierparams",
+    "data": {
+      "description": null,
+      "object_type": "notifier",
+      "value": "Ha saltado la alarma...mira los adjuntos por si hay video del momento",
+      "object_id": 1,
+      "key": "text",
+      "id": 5
+    }
+  },
+  {
+    "type": "notifierparams",
+    "data": {
+      "description": null,
+      "object_type": "notifier",
+      "value": "smtp.gmail.com",
+      "object_id": 1,
+      "key": "smtp_address",
+      "id": 6
+    }
+  },
+  {
+    "type": "notifierparams",
+    "data": {
+      "description": null,
+      "object_type": "notifier",
+      "value": "465",
+      "object_id": 1,
+      "key": "smtp_port",
+      "id": 7
+    }
+  },
+  {
+    "type": "notifierparams",
+    "data": {
+      "description": null,
+      "object_type": "notifier",
+      "value": "******r@gmail.com",
+      "object_id": 1,
+      "key": "smtp_user",
+      "id": 8
+    }
+  },
+  {
+    "type": "notifierparams",
+    "data": {
+      "description": null,
+      "object_type": "notifier",
+      "value": "*******",
+      "object_id": 1,
+      "key": "smtp_pass",
+      "id": 9
+    }
+  },
+  {
+    "type": "notifierparams",
+    "data": {
+      "description": null,
+      "object_type": "notifier",
+      "value": "SSL",
+      "object_id": 1,
+      "key": "smtp_security",
+      "id": 10
+    }
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "type": "notifiers",
+    "data": {
+      "description": null,
+      "cl": "Mailer",
+      "active_state": true,
+      "module": "mailer",
+      "id": 1,
+      "name": "Send email"
+    }
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "type": "sensorparams",
+    "data": {
+      "description": null,
+      "object_type": "sensor",
+      "value": "192.168.10.69",
+      "object_id": 1,
+      "key": "ip",
+      "id": 11
+    }
+  },
+  {
+    "type": "sensorparams",
+    "data": {
+      "description": null,
+      "object_type": "sensor",
+      "value": "8081",
+      "object_id": 1,
+      "key": "port",
+      "id": 12
+    }
+  },
+  {
+    "type": "sensorparams",
+    "data": {
+      "description": null,
+      "object_type": "sensor",
+      "value": "192.168.10.69",
+      "object_id": 2,
+      "key": "ip",
+      "id": 13
+    }
+  },
+  {
+    "type": "sensorparams",
+    "data": {
+      "description": null,
+      "object_type": "sensor",
+      "value": "8082",
+      "object_id": 2,
+      "key": "port",
+      "id": 14
+    }
+  }
+]

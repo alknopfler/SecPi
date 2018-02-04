@@ -1,0 +1,13 @@
+[
+  {
+    "type": "actions",
+    "data": {
+      "description": "sirena",
+      "cl": "Speaker",
+      "active_state": true,
+      "module": "speaker",
+      "id": 1,
+      "name": "sirena"
+    }
+  }
+]

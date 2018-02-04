@@ -1,0 +1,18 @@
+[
+  {
+    "type": "zones",
+    "data": {
+      "description": null,
+      "id": 1,
+      "name": "ventanas"
+    }
+  },
+  {
+    "type": "zones",
+    "data": {
+      "description": null,
+      "id": 2,
+      "name": "puertas"
+    }
+  }
+]

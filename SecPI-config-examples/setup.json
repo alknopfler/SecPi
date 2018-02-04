@@ -1,0 +1,11 @@
+[
+  {
+    "type": "setups",
+    "data": {
+      "description": null,
+      "active_state": false,
+      "id": 1,
+      "name": "alarma"
+    }
+  }
+]
