@@ -4,7 +4,7 @@
     "data": {
       "description": null,
       "object_type": "sensor",
-      "value": "192.168.10.69",
+      "value": "192.168.10.70",
       "object_id": 1,
       "key": "ip",
       "id": 11
@@ -26,7 +26,7 @@
     "data": {
       "description": null,
       "object_type": "sensor",
-      "value": "192.168.10.69",
+      "value": "192.168.10.70",
       "object_id": 2,
       "key": "ip",
       "id": 13
