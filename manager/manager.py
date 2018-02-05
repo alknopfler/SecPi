@@ -292,11 +292,12 @@ class Manager:
 			holddown_thread.start()
 
 			self.current_alarm_dir = "%s/%s" % (self.alarm_dir, time.strftime("/%Y%m%d_%H%M%S"))
-			try:
-				os.makedirs(self.current_alarm_dir)
-				logging.debug("Created directory for alarm: %s" % self.current_alarm_dir)
-			except OSError as oe: # directory can't be created, e.g. permissions wrong, or already exists
-				logging.exception("Wasn't able to create directory for current alarm: %s" % oe)
+			##### remove in order to get free space in raspy
+			#try:
+			#	os.makedirs(self.current_alarm_dir)
+			#	logging.debug("Created directory for alarm: %s" % self.current_alarm_dir)
+			#except OSError as oe: # directory can't be created, e.g. permissions wrong, or already exists
+			#	logging.exception("Wasn't able to create directory for current alarm: %s" % oe)
 			self.received_data_counter = 0
 
 			# iterate over workers and send "execute"
