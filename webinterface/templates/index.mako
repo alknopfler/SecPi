@@ -2,22 +2,20 @@
 
 <%def name="active_tab()"><% return "home" %></%def>
 
-<h1>Welcome AlkAlarm</h1>
-... to the control interface.
+<h1>Welcome to AlkAlarm</h1>
 
-<h2>Activar / Desactivar</h2>
 
 <div ng-controller="ActivateController as actCtrl">
-	<div ng-show="actCtrl.active_setups.length == 0">
-		<p style="color:#FF5733; font-weight:bold;">Alarma APAGADA:</p>
-		<dropdown ng-model="actCtrl.activate_setup" items="actCtrl.inactive_setups"></dropdown>
-		<input type="button" ng-click="actCtrl.activate()" class="btn btn-success" value="ACTIVAR" />
-	</div>
-	<div ng-show="actCtrl.active_setups.length > 0">
-		<p style="color:#048806; font-weight:bold;"> Alarma ENCENDIDA</b>:</p>
-		<dropdown ng-model="actCtrl.deactivate_setup" items="actCtrl.active_setups"></dropdown>
-		<input type="button" ng-click="actCtrl.deactivate()" class="btn btn-success" value="DESACTIVAR" />
-	</div>
+        <div ng-show="actCtrl.active_setups.length == 0" >
+        <p style="color:#FF5533; font-weight:bold;">Alarma APAGADA:
+                <p ng-model="actCtrl.activate_setup=actCtrl.inactive_setups[0]" ></p>
+                <input type="button" ng-click="actCtrl.activate()" class="btn btn-success" value="ACTIVAR" />
+        </div>
+        <div ng-show="actCtrl.active_setups.length > 0">
+        <p style="color:#048806; font-weight:bold;"> Alarma ENCENDIDA:
+                <p ng-model="actCtrl.deactivate_setup=actCtrl.active_setups[0]" ></p>
+                <input style="color:#FF5533;" type="button" ng-click="actCtrl.deactivate()" class="btn btn-success" value="DESACTIVAR" />
+        </div>
 </div>
 
 <div id="alarm_div">
