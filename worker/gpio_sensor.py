@@ -4,6 +4,7 @@ from tools.pigpio433 import rx
 import logging
 import time
 import sys
+import threading
 
 
 class GPIOSensor(Sensor):
