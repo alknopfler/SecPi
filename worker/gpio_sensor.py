@@ -28,8 +28,8 @@ class GPIOSensor(Sensor):
 	def activate(self):
 		if not self.corrupted:
 			self.stop_thread = False
-			self.checker_thread = threading.Thread(name="thread-checker-%s" % self.device_id,
-												   target=self.check_listen_data)
+			self.checker_thread = threading.Thread(name="thread-checker-%s" % self.gpio,
+												   target=self.check_listendata)
 			self.checker_thread.start()
 		else:
 			logging.error("AlkAlarm Sensor couldn't be activated")
@@ -40,11 +40,14 @@ class GPIOSensor(Sensor):
 		else:
 			logging.error("AlkAlarm Sensor couldn't be deactivated") # maybe make this more clear
 
-	def check_listen_data(self):
+	def check_listendata(self):
 		pi = pigpio.pi() # Connect to local Pi.
 		while True:
+			if self.stop_thread: #exit thread when flag is set
+				return
 			bus = rx(pi, gpio=27)
 			logging.error(bus.details())
 			self.alarm("Sensor detected something: %s" % bus.code())
 			time.sleep(60)
+			continue
 		pi.stop()
