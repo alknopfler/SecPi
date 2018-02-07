@@ -1,7 +1,10 @@
 from tools.sensor import Sensor
+import pigpio
+from tools.pigpio433 import rx
 import logging
+import time
+import sys
 
-import RPi.GPIO as GPIO
 
 class GPIOSensor(Sensor):
 	
@@ -19,42 +22,28 @@ class GPIOSensor(Sensor):
 			logging.error("GPIOSensor: Wasn't able to initialize the sensor, it seems there is a config parameter missing: %s" % ke)
 			self.corrupted = True
 			return
-		
-		GPIO.setmode(GPIO.BCM)
 		logging.debug("GPIOSensor: Sensor initialized")
-	
-	def setup_sensor(self):
-		try:
-			GPIO.setup(self.gpio, GPIO.IN)
-			GPIO.add_event_detect(self.gpio, GPIO.RISING, callback=self.cb_alarm, bouncetime=self.bouncetime)
-		except ValueError as ve: # GPIO pin number or bouncetime is not in valid range
-			logging.error("GPIOSensor: The given pin number or bouncetime is not in a valid range: %s" % ve)
-			return
-		logging.debug("GPIOSensor: Registered sensor at pin %s!" % self.gpio)
-	
-	def cleanup_sensor(self):
-		try:
-			GPIO.remove_event_detect(self.gpio)
-			GPIO.cleanup(self.gpio)
-		except ValueError as ve: # GPIO pin number is not in valid range
-			logging.error("GPIOSensor: The given pin number is not in a valid range: %s" % ve)
-		logging.debug("GPIOSensor: Removed sensor at pin %s!" % self.gpio)
-	
-	# callback for alarm
-	def cb_alarm(self, channel):
-		if(self.active):
-			self.alarm("GPIO sensor at pin %s activated!" % channel)
-	
+
 	def activate(self):
 		if not self.corrupted:
-			self.active = True
-			self.setup_sensor()
+			self.stop_thread = False
+			self.checker_thread = threading.Thread(name="thread-checker-%s" % self.device_id,
+												   target=self.check_listen_data)
+			self.checker_thread.start()
 		else:
-			logging.error("GPIOSensor: Sensor couldn't be activated")
+			logging.error("AlkAlarm Sensor couldn't be activated")
 
 	def deactivate(self):
 		if not self.corrupted:
-			self.active = False
-			self.cleanup_sensor()
+			self.stop_thread = True
 		else:
-			logging.error("GPIOSensor: Sensor couldn't be deactivated") # maybe make this more clear
+			logging.error("AlkAlarm Sensor couldn't be deactivated") # maybe make this more clear
+
+	def check_listen_data(self):
+		pi = pigpio.pi() # Connect to local Pi.
+		while True:
+			bus = rx(pi, gpio=27)
+			logging.error(bus.details())
+			self.alarm("Sensor detected something: %s" % bus.code())
+			time.sleep(60)
+		pi.stop()
