@@ -40,14 +40,18 @@ class GPIOSensor(Sensor):
 		else:
 			logging.error("AlkAlarm Sensor couldn't be deactivated") # maybe make this more clear
 
+	def send_alarm(self,code, bits, gap, t0, t1):
+		logging.error("el codigo esssssss %s" % code)
+		self.alarm("Sensor detected something: %s" % code)
+
 	def check_listendata(self):
 		pi = pigpio.pi() # Connect to local Pi.
 		while True:
 			if self.stop_thread: #exit thread when flag is set
 				return
-			bus = rx(pi, gpio=27)
+			bus = rx(pi, gpio=27, callback=send_alarm)
 			logging.error(bus.details())
-			self.alarm("Sensor detected something: %s" % bus.code())
+
 			time.sleep(60)
 			continue
 		pi.stop()
