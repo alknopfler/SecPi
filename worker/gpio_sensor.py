@@ -3,8 +3,8 @@ import pigpio
 from tools.pigpio433 import rx
 import logging
 import time
-import httplib
-import urllib
+import request
+import json
 import threading
 
 
@@ -42,14 +42,12 @@ class GPIOSensor(Sensor):
 			logging.error("AlkAlarm Sensor couldn't be deactivated") # maybe make this more clear
 
 	def request_http_api_deactivate(self):
-		params = urllib.urlencode({'id': 1})
-		headers = {
-			'Content-Type': "application/json",
-			'Cache-Control': "no-cache"
-		}
-		conn = httplib.HTTPConnection("192.168.10.70:8080")
-		conn.request("POST", "/deactivate", params, headers)
-		response = conn.getresponse()
+		url = 'http://192.168.10.70:8080/deactivate'
+		payload = {'id': 1}
+		headers = {'content-type': 'application/json'}
+
+		response = requests.post(url, data=json.dumps(payload), headers=headers)
+
 		logging.error(response.status)
 
 
