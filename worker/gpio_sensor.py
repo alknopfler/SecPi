@@ -71,6 +71,6 @@ class GPIOSensor(Sensor):
 			if self.stop_thread: #exit thread when flag is set
 				return
 			bus = rx(pi, gpio=27, callback=self.handler_events)
-			time.sleep(1)
+			time.sleep(3)
 			continue
 		pi.stop()
