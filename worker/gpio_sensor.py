@@ -3,7 +3,8 @@ import pigpio
 from tools.pigpio433 import rx
 import logging
 import time
-import requests
+import httplib
+import urllib
 import threading
 
 
@@ -40,21 +41,22 @@ class GPIOSensor(Sensor):
 		else:
 			logging.error("AlkAlarm Sensor couldn't be deactivated") # maybe make this more clear
 
-	def request_http_api_activate(self):
-		url = "http://192.168.10.70:8080/deactivate"
-		payload = "{\"id\":1}"
+	def request_http_api_deactivate(self):
+		params = urllib.urlencode({'id': 1})
 		headers = {
 			'Content-Type': "application/json",
-			'Authorization': "Digest username=\"admin\", realm=\"secpi\", nonce=\"1518069302:aad6b2b0feb33af26777203701f259cd\", uri=\"/deactivate\", algorithm=\"MD5\", qop=auth, nc=00000001, cnonce=\"0a42swe23\", response=\"3243a8518adb9a15e1b8cd9106e89087\", opaque=\"kkkkkkkkk\"",
-			'Cache-Control': "no-cache",
-			'Postman-Token': "d4002952-c22e-4554-ba4c-e51eaa753030"
+			'Authorization': "Digest username=\"admin\", realm=\"secpi\", nonce=\"1518071792:5eb188d871fe9605a253172efaed7a2\", uri=\"/deactivate\", algorithm=\"MD5\", qop=auth, nc=00000001, cnonce=\"0a4f234\", response=\"546e8d0c0bf64941173112506a713cb0\", opaque=\"opaque\"",
+			'Cache-Control': "no-cache"
 		}
-		response = requests.request("POST", url, data=payload, headers=headers)
+		conn = httplib.HTTPConnection("192.168.10.70:8080")
+		conn.request("POST", "/deactivate", params, headers)
+		response = conn.getresponse()
+		logging.error(response.status)
 
 
 	def handler_events(self,code, bits, gap, t0, t1):
-		if code == "3462412":
-			self.request_http_api_activate()
+		if code == 3462412:
+			self.request_http_api_deactivate()
 		else:
 			self.alarm("Sensor detected something: %s" % self.gpio)
 
