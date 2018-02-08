@@ -73,4 +73,5 @@ class GPIOSensor(Sensor):
 			bus = rx(pi, gpio=27, callback=self.handler_events)
 			time.sleep(3)
 			continue
+		bus.cancel()
 		pi.stop()
