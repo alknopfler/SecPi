@@ -45,7 +45,6 @@ class GPIOSensor(Sensor):
 		params = urllib.urlencode({'id': 1})
 		headers = {
 			'Content-Type': "application/json",
-			'Authorization': "Digest username=\"admin\", realm=\"secpi\", nonce=\"1518071792:5eb188d871fe9605a253172efaed7a2\", uri=\"/deactivate\", algorithm=\"MD5\", qop=auth, nc=00000001, cnonce=\"0a4f234\", response=\"546e8d0c0bf64941173112506a713cb0\", opaque=\"opaque\"",
 			'Cache-Control': "no-cache"
 		}
 		conn = httplib.HTTPConnection("192.168.10.70:8080")
