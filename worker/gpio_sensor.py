@@ -66,12 +66,16 @@ class GPIOSensor(Sensor):
 			self.alarm("Sensor detected something: %s" % self.gpio)
 
 	def check_listendata(self):
-		self.stop_thread = False
 		pi = pigpio.pi() # Connect to local Pi.
-		while not self.stop_thread:
-
+		count = 0
+		while True:
+			count+=1
+			if self.stop_thread: #exit thread when flag is set
+				pi.stop()
+				return
 			bus = rx(pi, gpio=27, callback=self.handler_events)
 			time.sleep(5)
-			bus.cancel()
+			logging.error("despues de sleep")
 			continue
+		bus.cancel()
 		pi.stop()
