@@ -55,7 +55,7 @@ class GPIOSensor(Sensor):
 
 
 	def handler_events(self,code, bits, gap, t0, t1):
-		if code == "3462412":
+		if code == 3462412:
 			self.request_http_api_deactivate()
 		else:
 			self.alarm("Sensor detected something: %s" % self.gpio)
