@@ -3,7 +3,7 @@ import pigpio
 from tools.pigpio433 import rx
 import logging
 import time
-import request
+import requests
 import json
 import threading
 
