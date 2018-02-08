@@ -4,6 +4,7 @@ from tools.pigpio433 import rx
 import logging
 import time
 import requests
+from requests.auth import HTTPDigestAuth
 import json
 import threading
 
@@ -41,20 +42,27 @@ class GPIOSensor(Sensor):
 		else:
 			logging.error("AlkAlarm Sensor couldn't be deactivated") # maybe make this more clear
 
-	def request_http_api_deactivate(self):
-		url = 'http://192.168.10.70:8080/deactivate'
+	def request_api_to_manage(self,alarm,value):
+		url = 'http://localhost:8080/'+value
 		payload = {'id': 1}
+		if alarm == "parcial":
+			payload = {'id': 2}
 		headers = {'content-type': 'application/json'}
-
-		response = requests.post(url, data=json.dumps(payload), headers=headers)
-
-		logging.error(response.status)
+		response = requests.post(url, auth=HTTPDigestAuth('admin', 'admin2803'),data=json.dumps(payload), headers=headers)
 
 
 	def handler_events(self,code, bits, gap, t0, t1):
-		if code == 3462412:
-			self.request_http_api_deactivate()
-		elif code == :
+		if code == 3462412:  # codigos abrir mando (cambiar por lectura a bd)
+			self.request_api_to_manage("completa","deactivate")
+			self.request_api_to_manage("parcial","deactivate")
+
+		elif code == 3462448:  # codigos cerrar mando completa (cambiar por lectura a bd)
+			self.request_api_to_manage("completa","activate")
+
+		elif code == 3462592:  # codigos parcial mando
+			self.request_api_to_manage("parcial","activate")
+
+		else:
 			self.alarm("Sensor detected something: %s" % self.gpio)
 
 	def check_listendata(self):
